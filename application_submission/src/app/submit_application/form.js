@@ -24,7 +24,10 @@ const Form=()=>{
 
         const submission =inputValues;
 
-        console.log(submission);
+        if(document.getElementById('permission').checked){
+            console.log(submission);
+        }
+        
 
     };
 
@@ -32,22 +35,22 @@ const Form=()=>{
 
         <form className='form-wrapper' onSubmit={handleSubmit}>
             <label htmlFor={firstNameId}>
-                First Name: <input id={firstNameId} type="text" name="firstName" value={inputValues.firstName}  
+                First Name: <input required id={firstNameId} type="text" name="firstName" value={inputValues.firstName}  
                 onChange={handleChange} />
             </label>
             <br/>
             <label>
-                Last Name: <input  type="text" name="lastName"   value={inputValues.lastName} 
+                Last Name: <input  required type="text" name="lastName"   value={inputValues.lastName} 
                 onChange={handleChange} />
             </label>
             <br/>
             <label>
-                Email: <input  type="email" name="email" value={inputValues.email}    
+                Email: <input required type="email" name="email" value={inputValues.email}    
                 onChange={handleChange} />
             </label>
             <br/>
             <label>
-                Permission to store information: <input name="form-checkbox" value="permission" id="persmision" type='checkbox' defaultChecked='true'></input>
+                Permission to store information: <input name="form-checkbox" value="permission" id="permission" type='checkbox' ></input>
             </label>
             <br/>
             <button type='submit'> Submit Application</button>
