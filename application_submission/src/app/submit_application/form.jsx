@@ -49,9 +49,15 @@ const Form=()=>{
                 onChange={handleChange} />
             </label>
             <br/>
-            <label>
-                Permission to store information: <input name="form-checkbox" value="permission" id="permission" type='checkbox' ></input>
-            </label>
+            
+            <fieldset>
+                <legend>required to submit form</legend>
+                <label htmlFor="permission">
+                    Permission to store information: 
+                </label>
+                <input name="form-checkbox" value="permission" id="permission" type='checkbox' ></input>
+            </fieldset>
+            
             <br/>
             <button type='submit'> Submit Application</button>
             <button type='button'> Clear Application</button>
