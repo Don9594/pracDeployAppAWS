@@ -1,4 +1,5 @@
-import Form from "./form"
+import Form from "../../_components/form"
+//import val from './api/submit_application';
 
 export default function  Submit_application()  {
 
@@ -7,8 +8,10 @@ export default function  Submit_application()  {
 return  (
     //<form></form>
 <>
-    <h2>Please fill the below form to submit your pdf.</h2>
-    <Form/>
+    <div>
+        <h2>Please fill the below form to submit your pdf.</h2>
+        <Form actionRoute= "/api/routes/submit_app" />
+    </div>
 </>
 )};
 
