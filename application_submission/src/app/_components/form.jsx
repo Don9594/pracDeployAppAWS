@@ -7,6 +7,10 @@ import styles from './form.module.css';
 
 const Form=(actionRoute)=>{
 
+    const validFName = useRef(false);
+    const validLName = useRef(false);
+    const validFType = useRef(false);   
+
     const [inputValues, setInputValues] = useState({
         firstName: '',
         lastName: '',
@@ -15,25 +19,31 @@ const Form=(actionRoute)=>{
 
     const  handleChange = (event) => {
         const {name,value}= event.target;
-
-
         setInputValues((prev)=>{
             return {...prev,[name]:value}
         });
+
+        //debounce((event)=>{
+        if(name=="pdfFile"){
+            console.log("pdffile condition opened");
+            checkFileType(event.target);
+        }
+        else{
+            console.log("username condition opened");
+            checkUsername(event.target);
+        }
+        //})
+
+        
     };
 
-    const validFName = useRef(false);
-    const validLName = useRef(false);
-    const validFType = useRef(false);    
+     
     
 
     //helper functions***********
-
-    //check input size
     const isBetween =(length,min,max)=>{
         return (length>=min && length <max? true:false);
     }
-
     const isAlpha = (value)=>{
         const exp = /[^a-z]/i;
         return !(exp.test(value));
@@ -53,14 +63,13 @@ const Form=(actionRoute)=>{
         const formField = element.parentElement;
         formField.classList.remove('error');
         formField.classList.add('success');
-        formField.querySelector('small').textContent='';
+        formField.querySelector('small').textContent='working..';
     }
 
     //**********/
-
     //check if input has only alpha characters and is of correct size
     function checkUsername(target){
-        let validLengthInput = isBetween(target.value.length,0,26);
+        let validLengthInput = isBetween(target.value.length,1,26);
         let validAlphaInput = isAlpha(target.value);
         if(!validLengthInput){
             errDisplay(target,"Enter a value between 0 and 26 characters.");
@@ -95,8 +104,8 @@ const Form=(actionRoute)=>{
         }
     } 
     //check if file type is pdf
-    function checkFileType(){
-        let file = document.querySelector('#pdfFile');
+    function checkFileType(target){
+        let file = target;
         if(file.value.search(/.pdf/i)<0){
             errDisplay(file,"Incorrect File Type. Please select a pdf file.");
             validFType.current=false;
@@ -109,50 +118,12 @@ const Form=(actionRoute)=>{
         }
     }
 
-
-    //Form Field Validation******************
-    //delay response
-    const debounce = (fn, delay = 500) => {
-        let timeoutId;
-        return (...args) => {
-            // cancel the previous timer
-            if (timeoutId) {
-                clearTimeout(timeoutId);
-            }
-            // setup a new timer
-            timeoutId = setTimeout(() => {
-                fn.apply(null, args)
-            }, delay);
-        };
-    };
-    //1. Input Change Validation
-    useLayoutEffect(()=>{
-        const form = document.querySelector('#pdf-form');
-        form.addEventListener('input',debounce((event)=>{
-            switch(event.target.id){
-                case 'firstName':
-                    checkUsername(document.querySelector('#firstName'));
-                    break;
-                
-                case 'lastName':
-                    checkUsername(document.querySelector('#lastName'));
-                    break;
-    
-                case 'pdfFile':
-                    checkFileType();
-                    break;
-            }
-
-            
-        }));
-    })
     
     //2. Submit Validation
     const validateForm=(event)=>{ 
         event.preventDefault();
         if(validFName.current &&validLName.current&&validFType.current){
             console.log(inputValues);
-            console.log("validFName is :" + validFName.current);
             return;
         }
         else{
