@@ -28,7 +28,7 @@ const Form=(actionRoute)=>{
             console.log("pdffile condition opened");
             checkFileType(event.target);
         }
-        else{
+        else if(name=="firstName" || name=="lastName"){
             console.log("username condition opened");
             checkUsername(event.target);
         }
