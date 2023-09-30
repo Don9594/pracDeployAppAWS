@@ -1,6 +1,55 @@
-.formwrapper{
-    position: flex;
-    height: 50%;
-    width: 50%;
-    background-color: navy;
+.formWrapper{
+    display:block;
+    height: 400px;
+    width: 500px;
+    background-color: rgb(1, 1, 70);
+    align-items: center;
+    justify-content:center;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+
+.formField{
+    height: 50px;
+    padding: 5px;
+}
+
+.formField input{
+
+    background-color: rgb(76, 65, 55);
+    border-width: 3px;
+    height: auto;
+    width: auto;
+    max-width: 500px;
+}
+
+.success{
+    border-color: green;
+    border-radius: 5%;
+}
+
+/*for future use*/
+.error{
+    
+}
+.formField small{
+    color: red;
+}
+
+.formField label{
+    font-weight: bold;
+}
+
+.formDivButton{
+    display: flex;
+    justify-content: center;
+}
+
+.formWrapper button{
+    padding: 3px;
+    background-color: seagreen;
+    border-radius: 4px;
+    border-color: seagreen;
 }

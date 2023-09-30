@@ -25,11 +25,9 @@ const Form=(actionRoute)=>{
 
         //debounce((event)=>{
         if(name=="pdfFile"){
-            console.log("pdffile condition opened");
             checkFileType(event.target);
         }
         else if(name=="firstName" || name=="lastName"){
-            console.log("username condition opened");
             checkUsername(event.target);
         }
         //})
@@ -53,8 +51,8 @@ const Form=(actionRoute)=>{
     const errDisplay = (element, message)=>{
         const formField = element.parentElement;
 
-        formField.classList.remove('success');
-        formField.classList.add('error');
+        element.classList.remove(`${styles.success}`);
+        formField.classList.add(`${styles.error}`);
 
         formField.querySelector('small').textContent = message;
     }
@@ -62,8 +60,8 @@ const Form=(actionRoute)=>{
     const succDisplay=(element)=>{
         const formField = element.parentElement;
         formField.classList.remove('error');
-        formField.classList.add('success');
-        formField.querySelector('small').textContent='working..';
+        element.classList.add(`${styles.success}`);
+        formField.querySelector('small').textContent='';
     }
 
     //**********/
@@ -143,59 +141,79 @@ const Form=(actionRoute)=>{
 
     return(
 
-        <form id="pdf-form" className={styles.formwrapper} onSubmit={validateForm} action={actionRoute} method="post">
+        <form id="pdf-form" className={styles.formWrapper} onSubmit={validateForm} action={actionRoute} method="post">
 
-            <div className='form-field'>
+            <div className={styles.formField}>
                 <label htmlFor="firstName">
                     First Name: 
-                    <input required  type="text" id="firstName" name="firstName" value={inputValues.firstName}  
-                    onChange={handleChange} />
-                    <small></small>
                 </label>
+                <input required  type="text" id="firstName" name="firstName" value={inputValues.firstName}  
+                    onChange={handleChange} />
+                <br/>
+                <i>
+                    <small></small>
+                </i>
+                
             </div>
 
             <br/>
 
-            <div className='form-field'>
+            <div className={styles.formField}>
                 <label htmlFor='lastName'>
                     Last Name: 
                 </label>
                 <input  required type="text" id="lastName" name="lastName"   value={inputValues.lastName} 
                     onChange={handleChange} />
-                <small></small>
+                <br/>
+                <i>
+                    <small></small>
+                </i>
+                
             </div>
 
             <br/>
 
-            <div className='form-field'>
+            <div className={styles.formField}>
                 <label>
                     Email: <input required type="email" name="email" value={inputValues.email}    
                     onChange={handleChange} />
                 </label>
-                <small></small>
+                <br/>
+                <i>
+                    <small></small>
+                </i>
             </div>
 
             <br/>
 
-            <div className='form-field'>
-                <label htmlFor='pdfFile'> select a File: </label>
+            <div className={styles.formField}>
+                <label htmlFor='pdfFile'> Select a File: </label>
                 <input required name="pdfFile" value={inputValues.file} id="pdfFile" type="file" onChange={handleChange}/>
-                <small></small>
+                <br/>
+                <i>
+                    <small></small>
+                </i>
             </div>
             
             <br/>
 
-            <div className='form-field'>
+            <div className={styles.formField}>
                 <label htmlFor="permission">
                     Permission to store information: 
                 </label>
                 <input required value="permission" id="permission" type='checkbox' />
-                <small></small>
+                <br/>
+                <i>
+                    <small></small>
+                </i>
             </div>
             
     
             <br/>
-            <button type='submit'> Submit Application</button>
+            <div className={styles.formDivButton}>
+                <button type='submit'> Submit Application</button>
+            </div>
+            
 
         </form>
     )
