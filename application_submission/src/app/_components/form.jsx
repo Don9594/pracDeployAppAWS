@@ -61,7 +61,7 @@ const Form=(actionRoute)=>{
     //**********/
     //check if input has only alpha characters and is of correct size
     function checkUsername(target){
-        let validLengthInput = isBetween(target.value.length,1,26);
+        let validLengthInput = isBetween(target.value);
         let validAlphaInput = isAlpha(target.value);
         if(!validLengthInput){
             errDisplay(target,"Enter a value between 0 and 26 characters.");

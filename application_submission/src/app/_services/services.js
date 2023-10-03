@@ -1,6 +1,6 @@
     //helper functions***********
-    export const isBetween =(length,min,max)=>{
-        return (length>=min && length <max? true:false);
+    export const isBetween =(value,min=1,max=26)=>{
+        return (value.length>=min && value.length <max? true:false);
     }
     
     export const isAlpha = (value)=>{
