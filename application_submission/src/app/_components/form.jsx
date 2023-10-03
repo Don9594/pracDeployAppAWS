@@ -1,7 +1,8 @@
 "use client"
 
-import {useState,useLayoutEffect, useRef} from 'react';
+import {useState, useRef} from 'react';
 import styles from './form.module.css';
+import { isAlpha,isBetween,isValidPdf } from '../_services/services';
 
 
 
@@ -38,14 +39,7 @@ const Form=(actionRoute)=>{
      
     
 
-    //helper functions***********
-    const isBetween =(length,min,max)=>{
-        return (length>=min && length <max? true:false);
-    }
-    const isAlpha = (value)=>{
-        const exp = /[^a-z]/i;
-        return !(exp.test(value));
-    }
+
 
     //Error Display function
     const errDisplay = (element, message)=>{
@@ -104,14 +98,15 @@ const Form=(actionRoute)=>{
     //check if file type is pdf
     function checkFileType(target){
         let file = target;
-        if(file.value.search(/.pdf/i)<0){
-            errDisplay(file,"Incorrect File Type. Please select a pdf file.");
-            validFType.current=false;
+
+        if(isValidPdf(file.value)==true){
+            succDisplay(file);
+            validFType.current=true;
             return;
         }
         else{
-            succDisplay(file);
-            validFType.current=true;
+            errDisplay(file,"Incorrect File Type. Please select a pdf file.");
+            validFType.current=false;
             return;
         }
     }

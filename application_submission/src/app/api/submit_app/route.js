@@ -1,3 +1,4 @@
+import { isAlpha,isBetween } from '@/app/_services/services';
 const fs = require('fs');
 
 
@@ -15,12 +16,14 @@ export async function POST(request){
     console.log("POST Request");
     
 
-    //i can do some server side validation later
+
     const req = await request.json();
 
-    const name = req.name;
+    const {firstName,lastName,email,pdfFile} = req;
 
-    console.log(name);
+    //server-side validation
+    let fNameValid = false, lNameValid =false;
+    
 
     const id = 5;
     const goal = 21;
