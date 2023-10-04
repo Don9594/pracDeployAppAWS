@@ -11,15 +11,29 @@ export async function GET(request){
 
 }
 
+/*POST REQUEST BODY:
+    key: firstName, value: string
+    key: lastName, value: string
+    key: email, value:email(string)
+    key: pdfFile, value: binary data(File)
+*/
+/*
+    we need mime package to extract file extension
+    we need date-fns to format today's date
+*/
 export async function POST(request){
 
     console.log("POST Request");
     
 
 
-    const req = await request.json();
+    const req = await request.formData();
 
-    const {firstName,lastName,email,pdfFile} = req;
+    const firstName = req.get('firstName');
+    const lastName = req.get('lastName');
+    const email = req.get('email');
+
+    //blob to get file data
 
     //server-side validation
     let fNameValid = false, lNameValid =false, fileTypeValid = false;
@@ -34,6 +48,7 @@ export async function POST(request){
     const succMsg = "Your submission has been recorded.";
 
     if(fNameValid && lNameValid && fileTypeValid){
+        //enter into database
         return Response.json({
             succMsg,
             firstName,

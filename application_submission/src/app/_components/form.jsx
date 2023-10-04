@@ -6,7 +6,7 @@ import { isAlpha,isBetween,isValidPdf } from '../_services/services';
 
 
 
-const Form=(actionRoute)=>{
+const Form=()=>{
 
     const validFName = useRef(false);
     const validLName = useRef(false);
@@ -112,11 +112,32 @@ const Form=(actionRoute)=>{
     }
 
     
-    //2. Submit Validation
-    const validateForm=(event)=>{ 
+    //2. Submit Validation - Weak Validation
+    const validateForm= async(event)=>{ 
         event.preventDefault();
         if(validFName.current &&validLName.current&&validFType.current){
-            console.log(inputValues);
+            let fData = new FormData();
+            fData.append('firstName',inputValues.firstName);
+            fData.append('lastName', inputValues.lastName);
+            fData.append('email',inputValues.email);
+            const pFile = document.getElementById("pdfFile")
+            fData.append('pdfFile', pFile.files[0], `${inputValues.firstName}.${inputValues.lastName}.pdf`)
+            try{
+                
+                const response = await fetch('/api/submit_app/',{
+                    method:"POST",
+                    body:JSON.stringify(fData),
+                    headers:{
+                        "Content-Type":"application/json"
+                    }
+                    
+                })
+                //console.log(response.json())
+            }
+            catch(e){
+                console.log(e);
+            }
+
             return;
         }
         else{
@@ -136,7 +157,7 @@ const Form=(actionRoute)=>{
 
     return(
 
-        <form id="pdf-form" className={styles.formWrapper} onSubmit={validateForm} action={actionRoute} method="post">
+        <form id="pdf-form" className={styles.formWrapper}  onSubmit={validateForm}>
 
             <div className={styles.formField}>
                 <label htmlFor="firstName">
