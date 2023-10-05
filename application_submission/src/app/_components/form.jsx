@@ -204,7 +204,7 @@ const Form=()=>{
 
             <div className={styles.formField}>
                 <label htmlFor='pdfFile'> Select a File: </label>
-                <input required name="pdfFile" value={inputValues.file} id="pdfFile" type="file" onChange={handleChange}/>
+                <input required name="pdfFile" value={inputValues.file} id="pdfFile" type="file" accept='application/pdf' onChange={handleChange}/>
                 <br/>
                 <i>
                     <small></small>
