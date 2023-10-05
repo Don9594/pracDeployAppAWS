@@ -97,10 +97,10 @@ const Form=()=>{
     } 
     //check if file type is pdf
     function checkFileType(target){
-        let file = target;
+        let file = target.files[0];
 
-        if(isValidPdf(file.value)==true){
-            succDisplay(file);
+        if(isValidPdf(file)==true){
+            succDisplay(target);
             validFType.current=true;
             return;
         }

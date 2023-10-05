@@ -1,3 +1,4 @@
+    import mime from "mime";
     //helper functions***********
     export const isBetween =(value,min=1,max=26)=>{
         return (value.length>=min && value.length <max? true:false);
@@ -8,11 +9,11 @@
         return !(exp.test(value));
     }
 
-    export const isValidPdf = (value)=>{
-        if(value.search(/.pdf/i)<0){
-            return false;
+    export const isValidPdf = (file)=>{
+        if(mime.getExtension(file.type)=='pdf'){
+            return true;
         }
         else{
-            return true;
+            return false;
         }
     }

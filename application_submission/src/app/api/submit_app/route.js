@@ -28,8 +28,6 @@ export async function GET(request){
 */
 export async function POST(request){
 
-    console.log("POST Request");
-
     const headersInstance = headers();
     const contentType = headersInstance.get('Content-Type').split(';')[0];
     if(contentType != "multipart/form-data"){
@@ -47,18 +45,31 @@ export async function POST(request){
     const firstName = req.get('firstName');
     const lastName = req.get('lastName');
     const email = req.get('email');
-
-    //blob to get file data
-    /*
-        File {
-        size: 188810,
-        type: 'application/pdf',
-        name: 'don.wijesinghe.pdf',
-        lastModified: 1696507827933
-    }*/
-
-    //var blobUrl = URL.createObjectURL(myBlob);
     const pdfFile = req.get('pdfFile');
+
+    if(!pdfFile || !firstName || !lastName || !email){
+
+        const res = new Response();
+        res.status(400);
+        return res.json({
+            error:"Incorrect user request"
+        },
+        {status:400});
+    }
+
+    //server-side validation
+    let fNameValid = false, lNameValid =false, fileTypeValid=false;
+    
+
+    fNameValid = (isAlpha(firstName) && isBetween(firstName))?true:false;
+    lNameValid = (isAlpha(lastName) && isBetween(lastName))?true:false;
+    fileTypeValid = isValidPdf(pdfFile);
+
+ 
+    //var blobUrl = URL.createObjectURL(myBlob);
+
+
+
     const buffer = Buffer.from(await pdfFile.arrayBuffer());
     const relativeUploadDir = `/submissions/${dateFn.format(Date.now(), "dd-MM-Y")}`;
     const uploadDir = join(process.cwd(), "_public", relativeUploadDir);
@@ -89,34 +100,10 @@ export async function POST(request){
         );
     }
     
-    
-    console.log(pdfFile);
-
-    if(!pdfFile || !firstName || !lastName || !email){
-
-        const res = new Response();
-        res.status(400);
-        return res.json({
-            error:"Incorrect user request"
-        },
-        {status:400});
-    }
-
-
-
-    //server-side validation
-    let fNameValid = false, lNameValid =false;
-
-    fNameValid = (isAlpha(firstName) && isBetween(firstName))?true:false;
-    lNameValid = (isAlpha(lastName) && isBetween(lastName))?true:false;
-    
-  
-
-
     const errMsg = "Incorrect input provided. Please try again.";
     const succMsg = "Your submission has been recorded.";
 
-    if(fNameValid && lNameValid ){
+    if(fNameValid && lNameValid && fileTypeValid ){
         //enter into database
         return Response.json({
             succMsg,
