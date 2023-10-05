@@ -126,11 +126,7 @@ const Form=()=>{
                 
                 const response = await fetch('/api/submit_app/',{
                     method:"POST",
-                    body:JSON.stringify(fData),
-                    headers:{
-                        "Content-Type":"application/json"
-                    }
-                    
+                    body:fData,
                 })
                 //console.log(response.json())
             }
