@@ -1,9 +1,11 @@
 import { isAlpha,isBetween,isValidPdf } from '@/app/_services/services';
 import {headers} from 'next/headers';
-import mime from 'mime';
 import {join} from 'path';
 import {stat,mkdir,writeFile} from "fs/promises";
 import * as dateFn from 'date-fns';
+import * as mysql from 'mysql2';
+
+
 
 
 
@@ -67,43 +69,63 @@ export async function POST(request){
 
  
     //var blobUrl = URL.createObjectURL(myBlob);
-
-
-
-    const buffer = Buffer.from(await pdfFile.arrayBuffer());
-    const relativeUploadDir = `/submissions/${dateFn.format(Date.now(), "dd-MM-Y")}`;
-    const uploadDir = join(process.cwd(), "_public", relativeUploadDir);
-
-    try {
-        await stat(uploadDir);
-        } 
-    catch (e) {
-        if (e.code === "ENOENT") {
-            await mkdir(uploadDir, { recursive: true });
-        } else {
-            return Response.json(
-            { error: "Internal server error." },
-            { status: 500 }
-            );
-        }
-    }
-
-    try {
-        
-        const filename = pdfFile.name;
-        await writeFile(`${uploadDir}/${filename}`, buffer);
-      } catch (e) {
-        console.error("Error while trying to upload a file\n", e);
-        return Response.json(
-          { error: "Something went wrong." },
-          { status: 500 }
-        );
-    }
     
     const errMsg = "Incorrect input provided. Please try again.";
     const succMsg = "Your submission has been recorded.";
 
     if(fNameValid && lNameValid && fileTypeValid ){
+
+        const buffer = Buffer.from(await pdfFile.arrayBuffer());
+        const date_today = dateFn.format(Date.now(),"MM-dd-Y");
+        const relativeUploadDir = `/submissions/${date_today}`;
+        const uploadDir = join(process.cwd(), "_public", relativeUploadDir);
+
+        try {
+            await stat(uploadDir);
+            }
+        catch (e) {
+            if (e.code === "ENOENT") {
+                await mkdir(uploadDir, { recursive: true });
+            } else {
+                return Response.json(
+                { error: "Internal server error." },
+                { status: 500 }
+                );
+            }
+        }
+
+        try {
+            
+            const filename = pdfFile.name;
+            await writeFile(`${uploadDir}/${filename}`, buffer);
+            //insert user information to database
+            //firstname, lastname, email, filename,date
+            try{
+                //create DB if not exist
+                const connection = mysql.createConnection({
+                    host:process.env.DB_HOST,
+                    user:process.env.DB_USER,
+                    password:process.env.DB_PASSWORD
+                })
+
+                connection.query(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`);
+                
+
+            }
+            catch(e){
+                console.log(e);
+                return Response.json(
+                    {error:"failed to setup database"},
+                    {status:500}
+                )
+            }
+        } catch (e) {
+            console.error("Error while trying to upload a file\n", e);
+            return Response.json(
+            { error: "Something went wrong." },
+            { status: 500 }
+            );
+        }
         //enter into database
         return Response.json({
             succMsg,
