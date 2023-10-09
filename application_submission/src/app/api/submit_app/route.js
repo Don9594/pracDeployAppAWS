@@ -77,8 +77,8 @@ export async function POST(request){
 
         const buffer = Buffer.from(await pdfFile.arrayBuffer());
         const date_today = dateFn.format(Date.now(),"MM-dd-Y");
-        const relativeUploadDir = `/submissions/${date_today}`;
-        const uploadDir = join(process.cwd(), "_public", relativeUploadDir);
+        const relativeUploadDir = `_public/submissions/${date_today}`;
+        const uploadDir = join(process.cwd(),relativeUploadDir);
 
         try {
             await stat(uploadDir);
@@ -96,41 +96,19 @@ export async function POST(request){
 
         try {
             
-            const filename = pdfFile.name.toLowerCase();
+            const filename =  pdfFile.name.toLowerCase();
             await writeFile(`${uploadDir}/${filename}`, buffer);
-            //insert user information to database
-            //firstname, lastname, email, filename,date
+
             try{
-                //create DB if not exist
+
                 const connection = mysql.createConnection({
                     host:process.env.DB_HOST,
                     user:process.env.DB_USER,
                     password:process.env.DB_PASSWORD
                 })
-
-                //create database if not exist - consider just removing it.
-                //create table if not exist - consider just removing it. (speed up)
-                //insert row
-                
-                //connection.query(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`);
-                
-                /*connection.query(`CREATE TABLE IF NOT EXISTS ${process.env.DB_TBL_USR}(
-                    firstName VARCHAR(26),
-                    lastName VARCHAR(26),
-                    email VARCHAR(50),
-                    filename VARCHAR(53),
-                    date CHAR(10))`);*/
-
                 connection.query(`USE ${process.env.DB_NAME}`);
-
-
-                
-
-        
-
-
-
-
+                connection.query(`INSERT INTO ${process.env.DB_TBL_USR} (firstName,lastName,email,filename,date)
+                VALUES ("${firstName}","${lastName}","${email}","${relativeUploadDir+'/'+filename}","${date_today}")`)
             }
             catch(e){
                 console.log(e);
@@ -151,7 +129,8 @@ export async function POST(request){
             succMsg,
             firstName,
             lastName,
-            email
+            email,
+            date_today
         },
         {
             status:200
