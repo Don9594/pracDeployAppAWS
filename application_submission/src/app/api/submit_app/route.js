@@ -44,9 +44,9 @@ export async function POST(request){
 
 
     const req = await request.formData();
-    const firstName = req.get('firstName');
-    const lastName = req.get('lastName');
-    const email = req.get('email');
+    const firstName = req.get('firstName').toLowerCase();
+    const lastName = req.get('lastName').toLowerCase();
+    const email = req.get('email').toLowerCase();
     const pdfFile = req.get('pdfFile');
 
     if(!pdfFile || !firstName || !lastName || !email){
@@ -96,7 +96,7 @@ export async function POST(request){
 
         try {
             
-            const filename = pdfFile.name;
+            const filename = pdfFile.name.toLowerCase();
             await writeFile(`${uploadDir}/${filename}`, buffer);
             //insert user information to database
             //firstname, lastname, email, filename,date
@@ -122,7 +122,8 @@ export async function POST(request){
                     date CHAR(10))`);*/
 
                 connection.query(`USE ${process.env.DB_NAME}`);
-                
+
+
                 
 
         
@@ -150,7 +151,6 @@ export async function POST(request){
             succMsg,
             firstName,
             lastName,
-            pdfFile,
             email
         },
         {
@@ -162,7 +162,7 @@ export async function POST(request){
             errMsg,
             firstName,
             lastName,
-            pdfFile
+            email
         });
     }
 }
