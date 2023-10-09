@@ -124,7 +124,6 @@ export async function POST(request){
             { status: 500 }
             );
         }
-        //enter into database
         return Response.json({
             succMsg,
             firstName,

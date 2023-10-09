@@ -1,15 +1,28 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
+  background-color: white;
+  color: black;
 }
 
 .homeButton{
-  min-width: 10vw;
-  min-height: 10vh;
+  width: 300px;
+  height: 100px;
+  border-radius: 5px;
+  background-color: rgb(8, 8, 97);
+  font-size: large;
+}
+
+.buttonBar{
+  width: 900px;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+
 }
 
 .description {
@@ -31,7 +44,7 @@
 }
 
 .description p {
-  position: relative;
+  position:relative;
   margin: 0;
   padding: 1rem;
   background-color: rgba(var(--callout-rgb), 0.5);
