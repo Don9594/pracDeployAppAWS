@@ -108,14 +108,33 @@ export async function POST(request){
                     password:process.env.DB_PASSWORD
                 })
 
-                connection.query(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`);
+                //create database if not exist - consider just removing it.
+                //create table if not exist - consider just removing it. (speed up)
+                //insert row
                 
+                //connection.query(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`);
+                
+                /*connection.query(`CREATE TABLE IF NOT EXISTS ${process.env.DB_TBL_USR}(
+                    firstName VARCHAR(26),
+                    lastName VARCHAR(26),
+                    email VARCHAR(50),
+                    filename VARCHAR(53),
+                    date CHAR(10))`);*/
+
+                connection.query(`USE ${process.env.DB_NAME}`);
+                
+                
+
+        
+
+
+
 
             }
             catch(e){
                 console.log(e);
                 return Response.json(
-                    {error:"failed to setup database"},
+                    {error:"database failure"},
                     {status:500}
                 )
             }
