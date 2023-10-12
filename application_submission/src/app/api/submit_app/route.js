@@ -5,10 +5,6 @@ import {stat,mkdir,writeFile} from "fs/promises";
 import * as dateFn from 'date-fns';
 import * as mysql from 'mysql2';
 
-
-
-
-
 export async function GET(request){
 
 

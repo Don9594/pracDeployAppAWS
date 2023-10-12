@@ -106,3 +106,10 @@ a {
   }
 }
 
+.appButton{
+  width: 300px;
+  height: 100px;
+  border-radius: 5px;
+  background-color: rgb(8, 8, 97);
+  font-size: large;
+}
