@@ -1,4 +1,4 @@
-import Form from "../../_components/form"
+import Form from "../../_components/Form"
 import styles from './styles.module.css';
 //import val from './api/submit_application';
 

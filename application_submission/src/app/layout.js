@@ -2,8 +2,11 @@
 
 //This is the top most layout. hence why we call it the root layout. must have the html and body tags.
 
-import './globals.css'
-import { Inter } from 'next/font/google'
+import './globals.css';
+import { Inter } from 'next/font/google';
+import SessionProvider  from '@/app/_components/SessionProvider';
+import { getServerSession } from 'next-auth';
+import NavMenu from './_components/NavMenu';
 
 
 
@@ -14,20 +17,18 @@ export const metadata = {
   description: 'This application is designed to implement AWS services.',
 }
 
-// export function Button({children,val}){
-//   return(
 
-//     <button onClick={children}>
-//       {val}
-//     </button>
-//   );
-// }
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+
+  const session = await getServerSession();
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
+        <SessionProvider session={session}>
+          <NavMenu/>
+          {children}
+        </SessionProvider>
       </body>
     </html>
   )

@@ -13,7 +13,7 @@ export default function Home() {
       </Link>
 
       <Link href='./view_status'>
-        <button className="appButton" > View Application Status </button>
+        <button className="appButton" > View Application Status</button>
       </Link>
      </div>
     </main>
